@@ -5,15 +5,11 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <vector>
+#include "Process.h"
 
 using namespace std;
 
-void printMatrix(vector<int> c){
-  for(unsigned int i = 0; i < c.size(); i++){
-    cout << c[i] << " ";
-  }
-  cout << endl;
-}
+
 
 /*  */
 void TestMatrix(string dimension_filename){
