@@ -12,58 +12,68 @@
 #include <iostream>
 #include "Simulation.h"
 
-using namespace std;
-
 // main
 int main()
 {
   long long int TOTAL_RAM_MEMORY = 0;
   long long int TOTAL_HARD_DISKS = 0;
 
-  cout << "How much RAM memory is there on the simulated computer?" << endl;
-  cin >> TOTAL_RAM_MEMORY;
+  std::cout << "How much RAM memory is there on the simulated computer?" << std::endl;
+  std::cin >> TOTAL_RAM_MEMORY;
 
-  cout << "Your program receives the number in bytes (no kilobytes or words)." << endl;
-  cin >> TOTAL_HARD_DISKS;
+  std::cout << "Your program receives the number in bytes (no kilobytes or words)." << std::endl;
+  std::cin >> TOTAL_HARD_DISKS;
 
-  cout << "TOTAL_RAM_MEMORY: " << TOTAL_RAM_MEMORY << ", "
-       << "TOTAL_HARD_DISKS: " << TOTAL_HARD_DISKS << endl;
+  std::cout << "TOTAL_RAM_MEMORY: " << TOTAL_RAM_MEMORY << ", "
+            << "TOTAL_HARD_DISKS: " << TOTAL_HARD_DISKS << std::endl;
+
+  Memory RAM(TOTAL_RAM_MEMORY);
+  // CPU CPU(); can be defaulted in declared to idle
+  // HardDisks HARD_DISKS (TOTAL_HARD_DISKS);
+  // ReadyQueue RQ();
+  Simulation cpu_scheduling(RAM /* ,cpu, RQ, ioqueue, harddisks*/);
 
   while (true)
   {
     char command = ' ';
-    cin >> command;
+    std::cin >> command;
 
-    cout << ": " << command << endl;
+    // std::cout << ": " << command << std::endl;
     if (command == 'S')
     {
       char second_command = ' ';
-      cin >> second_command;
+      std::cin >> second_command;
       if (second_command == 'r')
       {
-        cout << "Shows what process is currently using the CPU and what processes are waiting on both levels of the ready-queue." << endl;
+        cpu_scheduling.printSR();
       }
       else if (second_command == 'i')
       {
-        cout << "Shows what processes are currently using the hard disks and what processes are waiting to use them. For each busy hard disk show the process that uses it and show its I/O-queue. The enumeration of hard disks starts from 0." << endl;
+        cpu_scheduling.printSI();
       }
       else if (second_command == 'm')
       {
-        cout << "Shows the state of memory. Show the range of memory addresses used by each process in the system." << endl;
+        cpu_scheduling.printSM();
       }
       else
       {
-        cout << "No specific view requested." << endl;
+        std::cout << "No specific view requested." << std::endl;
       }
     }
 
-    /* Should I count A 100  0 00 as A 100000? */
+    /* Should I count A 100 */
     if (command == 'A')
     {
+      char second_command = ' ';
+      std::cin >> second_command;
+      if (second_command == 'R')
+      {
+        cpu_scheduling.printSR();
+      }
       long memory_size = 0;
-      cin >> memory_size;
+      std::cin >> memory_size;
 
-      cout << "Memory Size: " << memory_size << endl;
+      std::cout << "Memory Size: " << memory_size << std::endl;
     }
   }
 
