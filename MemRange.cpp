@@ -40,3 +40,9 @@ long long int MemRange::getEnd() const
 {
   return end_;
 }
+
+// @return process
+Process MemRange::getProcess() const
+{
+  return process_;
+}

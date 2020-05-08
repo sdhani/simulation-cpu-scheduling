@@ -19,6 +19,7 @@ public:
   void setProcess(const Process &process);   // set process
   long long int getStart() const;            // @return start range
   long long int getEnd() const;              // @return end range
+  Process getProcess() const;                // @return process
 };
 
 #endif // MEMRANGE_H
