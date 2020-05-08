@@ -7,7 +7,7 @@ class Process
 {
 private: 
   std::string process_type_; /* Common Process or RT-process */
-  int memory_size_ = 0;
+  long long int memory_size_ = 0; /* In the case that process takes up entire memory */
   int pid_ = 0; /* Don't reassign PID's */
 
 public: 
@@ -19,7 +19,7 @@ public:
   void setMemorySize(int memory_size); // sets memory_size
   void setPID(int pid); // sets pid EXPLORE AUTO-INCREMENT/COUNT OF PROCESSES "BAG"
   std::string getProcessType() const; // @return process type
-  int getMemorySize() const; // @return memory size
+  long long int getMemorySize() const; // @return memory size
   int getPID() const; // @return pid
 
 }; //end Process
