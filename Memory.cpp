@@ -9,7 +9,7 @@ Memory::Memory(const long long int &memory_size)
 }
 
 // sets size of RAM memory
-void Memory::setMemorySize(int memory_size)
+void Memory::setMemorySize(const int &memory_size)
 {
   memory_size_ = memory_size;
 }
@@ -21,7 +21,7 @@ long long int Memory::getMemorySize() const
 }
 
 // @return memory list
-std::list<MemRange> Memory::getMemorySnapshot() const
+std::list<MemRange> Memory::getContiguousMemory() const
 {
   return continguous_memory_;
 }

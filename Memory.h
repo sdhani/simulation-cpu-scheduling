@@ -16,10 +16,10 @@ public:
   Memory(); // default constructor
   Memory(const long long int &memory_size);
 
-  void setMemorySize(int memory_size);           // sets size of RAM memory
-  long long int getMemorySize() const;           // @return size of RAM memory
-  std::list<MemRange> getMemorySnapshot() const; // @return memory list
-  void printMemory() const;                      // print out memory snapshot
+  void setMemorySize(const int &memory_size);      // sets size of RAM memory
+  long long int getMemorySize() const;             // @return size of RAM memory
+  std::list<MemRange> getContiguousMemory() const; // @return memory list
+  void printMemory() const;                        // print out memory snapshot
 
 }; //end Memory
 
