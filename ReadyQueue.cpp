@@ -72,7 +72,6 @@ bool ReadyQueue::terminateCurrentProcess() {
     std::cout << "No process to terminate. " << std::endl;
     return false;
   }
-
   return true;
 }
 
