@@ -10,7 +10,7 @@
 */
 
 #include <iostream>
-#include "Simulation.h"
+#include "Simulation.hpp"
 
 // main
 int main()
@@ -28,54 +28,43 @@ int main()
             << "TOTAL_HARD_DISKS: " << TOTAL_HARD_DISKS << std::endl;
 
   Memory RAM(TOTAL_RAM_MEMORY);
-  // CPU CPU(); can be defaulted in declared to idle
-  // HardDisks HARD_DISKS (TOTAL_HARD_DISKS);
-  // ReadyQueue RQ();
-  Simulation cpu_scheduling(RAM /* ,cpu, RQ, ioqueue, harddisks*/);
+  HardDisks HARD_DISKS(TOTAL_HARD_DISKS);
+  Simulation cpu_scheduling(RAM, HARD_DISKS);
 
-  while (true)
+  std::string command;
+
+  while (getline(std::cin, command))
   {
-    char command = ' ';
-    std::cin >> command;
-
-    // std::cout << ": " << command << std::endl;
-    if (command == 'S')
-    {
-      char second_command = ' ';
-      std::cin >> second_command;
-      if (second_command == 'r')
-      {
-        cpu_scheduling.printSR();
-      }
-      else if (second_command == 'i')
-      {
-        cpu_scheduling.printSI();
-      }
-      else if (second_command == 'm')
-      {
-        cpu_scheduling.printSM();
-      }
-      else
-      {
-        std::cout << "No specific view requested." << std::endl;
-      }
-    }
-
-    /* Should I count A 100 */
-    if (command == 'A')
-    {
-      char second_command = ' ';
-      std::cin >> second_command;
-      if (second_command == 'R')
-      {
-        cpu_scheduling.printSR();
-      }
-      long memory_size = 0;
-      std::cin >> memory_size;
-
-      std::cout << "Memory Size: " << memory_size << std::endl;
-    }
+    cpu_scheduling.interpretCommand(command);
   }
 
   return 0;
 }
+
+// while (true)
+// {
+//   char command = ' ';
+//   std::cin >> command;
+
+//   // std::cout << ": " << command << std::endl;
+//   if (command == 'S')
+//   {
+//     char second_command = ' ';
+//     std::cin >> second_command;
+//     if (second_command == 'r')
+//     {
+//       cpu_scheduling.printSR();
+//     }
+//     else if (second_command == 'i')
+//     {
+//       cpu_scheduling.printSI();
+//     }
+//     else if (second_command == 'm')
+//     {
+//       cpu_scheduling.printSM();
+//     }
+//     else
+//     {
+//       std::cout << "No specific view requested." << std::endl;
+//     }
+//   }

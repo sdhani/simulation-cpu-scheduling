@@ -1,4 +1,4 @@
-#include "Memory.h"
+#include "Memory.hpp"
 #include <iomanip>
 
 Memory::Memory() {}

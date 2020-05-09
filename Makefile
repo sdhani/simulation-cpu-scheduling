@@ -1,54 +1,50 @@
-##############################################
-##
-## Makefile
-## LINUX compilation 
-##
-##############################################
+# ##############################################
+# ##
+# ## Makefile
+# ## LINUX compilation 
+# ##
+# ##############################################
 
 
-#FLAGS
-C++FLAG = -g -std=c++11 -Wall
+# *****************************************************
+# Variables to control Makefile operation
 
-#Math Library
-MATH_LIBS = -lm
-EXEC_DIR=.
+CXX = g++
+CXXFLAGS = -Wall -g
 
+# ****************************************************
+# Targets needed to bring the executable up to date
 
-#Rule for .cpp files
-# .SUFFIXES : .cc.o 
+all: Main.o Simulation.o Memory.o ReadyQueue.o MemRange.o Process.o HardDisks.o IOQueue.o CPU.o
+	$(CXX) $(CXXFLAGS) -o Simulation Main.o Simulation.o Memory.o ReadyQueue.o MemRange.o Process.o HardDisks.o IOQueue.o CPU.o
 
-.cc.o:
-	g++ $(C++FLAG) $(INCLUDES)  -c $< -o $@
+# The main.o target can be written more simply
 
+Main.o: Main.cpp Simulation.hpp Memory.hpp ReadyQueue.hpp MemRange.hpp Process.hpp HardDisks.hpp IOQueue.hpp CPU.o
+	$(CXX) $(CXXFLAGS) -c Main.cpp
 
-#Including
-INCLUDES=  -I. 
+Simulation.o: Simulation.hpp
+#include "Memory.h"
+#include "CPU.h"
+#include "ReadyQueue.h"
+#include "IOQueue.h"
+#include "HardDisks.h"
 
+ReadyQueue.o: ReadyQueue.hpp Process.hpp
 
-LIBS_ALL =  -L/usr/lib -L/usr/local/lib $(MATH_LIBS) 
+Memory.o: Memory.hpp MemRange.hpp HardDisks.hpp IOQueue.hpp
 
+MemRange.o: MemRange.hpp Process.hpp
 
-#ZEROTH PROGRAM
-ALL_OBJ0=Main.o
-PROGRAM_0=main
-$(PROGRAM_0): $(ALL_OBJ0)
-	g++ $(C++FLAG) -o $(EXEC_DIR)/$@ $(ALL_OBJ0) $(INCLUDES) $(LIBS_ALL)
+Process.o: Process.hpp
 
+HardDisks.o: HardDisks.hpp IOQueue.hpp
 
-#Compiling all
+IOQueue.o: IOQueue.hpp
 
-all: 	
-		make $(PROGRAM_0)
-
-# runMatrix: 	
-# 		./$(PROGRAM_0) dimensions_file.txt
+CPU.o: CPU.hpp
 
 
 #Clean obj files
-
 clean:
-	(rm -f *.o; rm -f $(PROGRAM_0))
-
-
-
-(:
+	(rm -f *.o; rm -f Simulation)

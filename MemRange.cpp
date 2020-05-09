@@ -1,4 +1,4 @@
-#include "MemRange.h"
+#include "MemRange.hpp"
 
 // default constructor
 MemRange::MemRange() {}

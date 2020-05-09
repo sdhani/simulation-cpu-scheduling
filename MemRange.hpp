@@ -1,7 +1,7 @@
 #ifndef MEMRANGE_H
 #define MEMRANGE_H
 
-#include "Process.h"
+#include "Process.hpp"
 
 class MemRange
 {
