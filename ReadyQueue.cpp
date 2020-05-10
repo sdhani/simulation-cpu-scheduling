@@ -4,52 +4,30 @@
 /* Default Constructor */
 ReadyQueue::ReadyQueue() {}
 
-/* Parameterized Constructor */
-ReadyQueue::ReadyQueue(const long long int &total_memory)
-{
-  // declare new ReadyQueue with x RAM
-  TOTAL_RAM_MEMORY_ = total_memory; // keep track of total memory capacity
-  avail_memory_ = total_memory;     // starting val for memory
-}
-
 /* New process arrives/is created */
 // @return success
 bool ReadyQueue::addProcess(Process &new_process)
 {
-  // add process to ReadyQueue, return success
-  if (avail_memory_ >= new_process.getMemorySize())
+  if (new_process.getProcessType() == "RT")
   {
-    if (new_process.getProcessType() == "RT")
-    {
-      /* if RT-process arrives while common process is running, common process gets 
-      preemptied and sent to the head of the common processes ready-queue. */
-      // if(getProcessOnCPU().getProcessType() == "C"){} DOES THIS BY DEFAULT
-
-      avail_memory_ -= new_process.getMemorySize();
-      new_process.setPID(pid_count_); // POOR DESIGN
-      ready_queue_rt_.push_back(new_process);
-      pid_count_++; // update process id count
-      size_++;
-    }
-    else
-    {
-      avail_memory_ -= new_process.getMemorySize();
-      new_process.setPID(pid_count_);
-      ready_queue_common_.push_back(new_process);
-      pid_count_++; // update process id count
-      size_++;
-    }
+    ready_queue_rt_.push_back(new_process);
+    size_++;
+    return true;
+  }
+  else if (new_process.getProcessType() == "C")
+  {
+    ready_queue_common_.push_back(new_process);
+    size_++;
     return true;
   }
   else
   {
-    std::cout << "Not enough memory to add new process" << std::endl;
     return false;
   }
 }
 
 // @return current process on the CPU
-Process ReadyQueue::getProcessOnCPU()
+Process ReadyQueue::getProcessOnCPU() const
 {
   // get process at top of deque
   if (!ready_queue_rt_.empty())
@@ -71,14 +49,12 @@ bool ReadyQueue::terminateCurrentProcess()
   if (!ready_queue_rt_.empty())
   {
     std::cout << "Terminated RT process #" << ready_queue_rt_.front().getPID() << std::endl;
-    avail_memory_ += ready_queue_rt_.front().getMemorySize();
     ready_queue_rt_.pop_front();
     size_--;
   }
   else if (!ready_queue_common_.empty())
   {
     std::cout << "Terminated Common process #" << ready_queue_common_.front().getPID() << std::endl;
-    avail_memory_ += ready_queue_common_.front().getMemorySize();
     ready_queue_common_.pop_front();
     size_--;
   }
@@ -110,12 +86,6 @@ void ReadyQueue::endTimeSlice()
   }
 }
 
-// @return amount of memory available
-long long int ReadyQueue::getAvailMemory() const
-{
-  return avail_memory_;
-}
-
 // @return current size of Ready Queue
 int ReadyQueue::getSize() const
 {
@@ -139,16 +109,21 @@ void ReadyQueue::printReadyQueue()
 {
   std::cout << "CPU: ";
   int cpu_pid = -1;
+
   // get process at top of deque
   if (!ready_queue_rt_.empty())
   {
     cpu_pid = ready_queue_rt_.front().getPID();
     std::cout << ready_queue_rt_.front().getPID() << std::endl;
   }
+  else if (!ready_queue_common_.empty())
+  {
+    cpu_pid = ready_queue_common_.front().getPID();
+    std::cout << ready_queue_common_.front().getPID() << std::endl;
+  }
   else
   {
-    cpu_pid = ready_queue_rt_.front().getPID();
-    std::cout << ready_queue_common_.front().getPID() << std::endl;
+    std::cout << "IDLE" << std::endl;
   }
 
   //================================================================================================
