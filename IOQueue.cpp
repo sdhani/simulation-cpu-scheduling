@@ -20,7 +20,6 @@ Process IOQueue::onDisk() const
 {
   if (io_queue_.empty())
   {
-    std::cout << "IDLE" << std::endl;
     Process p;
     p.setPID(-1);
     return p; // process does not exist
@@ -34,7 +33,7 @@ bool IOQueue::isEmpty() const
   return (io_queue_.size() <= 1);
 }
 
-// @return i/o queue
+// @return i/o queue (including process on disk at pos 0)
 std::deque<Process> IOQueue::getIOQueue() const
 {
   return io_queue_;
