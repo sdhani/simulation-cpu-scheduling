@@ -1,3 +1,4 @@
+#include <iostream>
 #include "HardDisks.hpp"
 
 // default constructor
@@ -10,7 +11,7 @@ HardDisks::HardDisks(const int &total)
   for (int i = 0; i < total; i++)
   {
     IOQueue io_queue;
-    hard_disks_.insert(std::make_pair(i, io_queue));
+    hard_disks_.push_back(io_queue);
   }
 }
 
@@ -21,7 +22,7 @@ void HardDisks::setTotal(const int &total)
 }
 
 // @return hard disks in use by process
-std::unordered_map<int, IOQueue> HardDisks::getHardDiskUsage() const
+std::vector<IOQueue> HardDisks::getHardDiskUsage() const
 {
   return hard_disks_;
 }
@@ -35,55 +36,67 @@ int HardDisks::getTotalDisks() const
 // @return true if disk number is idle
 bool HardDisks::isIdle(const int &disk_number) const
 {
-  /* Get I/O queue for  hard disk with disk_number */
-  auto got = hard_disks_.find(disk_number);
-
-  if (got == hard_disks_.end())
+  if (unsigned(disk_number) < hard_disks_.size())
   {
-    std::cout << "Disk # " << disk_number << "  does not exist" << std::endl;
+    if (hard_disks_[disk_number].onDisk().getPID() == -1)
+    {
+      return true;
+    }
   }
-  else if (got->second.getIOQueue().empty())
+  return false;
+}
+
+// serve process on hard disk number
+bool HardDisks::requestDisk(const int &disk_number, const Process &cpu_process)
+{
+  if (unsigned(disk_number) < hard_disks_.size())
   {
+    hard_disks_[disk_number].addProcess(cpu_process);
     return true;
   }
+  return false;
+}
 
+// end process at disk_number use
+bool HardDisks::endDiskUse(const int &disk_number, Process &finished_process)
+{
+  if (unsigned(disk_number) < hard_disks_.size())
+  {
+    finished_process = hard_disks_[disk_number].onDisk();
+    hard_disks_[disk_number].endProcess(); /* end process on hard disk */
+    return true;
+  }
   return false;
 }
 
 // @return process using Hard Disk
 Process HardDisks::usingHardDisk(const int &disk_number) const
 {
-  /* Get I/O queue for  hard disk with disk_number */
-  auto got = hard_disks_.find(disk_number);
-
-  if (got == hard_disks_.end())
-  {
-    std::cout << "Disk # " << disk_number << "  does not exist" << std::endl;
-  }
-  else if (got->second.onDisk().getPID() != -1)
-  {
-    std::cout << "Valid Process" << std::endl;
-  }
-  else
-  {
-    std::cout << "Invalid Process, PID: -1" << std::endl;
-  }
-  return got->second.onDisk();
+  return hard_disks_[disk_number].onDisk(); /* returns pid -1 */
 }
 
 // print hard disks snapshot
 void HardDisks::printHardDisks()
 {
-  std::cout << "This has to be ordered prolly" << std::endl;
-
-  for (auto &p : hard_disks_)
+  for (unsigned i = 0; i < hard_disks_.size(); i++)
   {
-    std::cout << "Hard Disk: " << p.first << std::endl;
-    std::cout << "Serving: " << p.second.getIOQueue().front().getPID() << std::endl;
-    // std::deque<Process> io_queue = p.second.getIOQueue();
-    for (Process q : p.second.getIOQueue())
+    IOQueue &p = hard_disks_[i];
+    std::cout << "HDD ";
+    std::cout << std::to_string(i) << ": ";
+    std::cout << ((p.onDisk().getPID() == -1) ? "IDLE" : "P" + std::to_string(p.onDisk().getPID())) << std::endl;
+
+    std::cout << "I/O Queue: ";
+    if (!p.isEmpty())
     {
-      std::cout << q.getPID() << std::endl;
+      for (unsigned i = 0; i < p.getIOQueue().size(); i++)
+      {
+        Process q = p.getIOQueue()[i];
+        if (i != 0 && q.getPID() != -1)
+        {
+          std::cout << "P" << q.getPID() << ", ";
+        }
+      }
     }
+    std::cout << std::endl;
   }
 }
