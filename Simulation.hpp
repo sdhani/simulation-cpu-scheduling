@@ -13,6 +13,7 @@ private:
   CPU CPU_;
   ReadyQueue READY_QUEUE_;
   HardDisks HARD_DISKS_;
+  int PID_COUNT_ = 1; // keep track of PID
 
 public:
   Simulation(); // default constructor
