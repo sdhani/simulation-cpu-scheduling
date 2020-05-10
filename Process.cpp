@@ -7,7 +7,7 @@ Process::Process() {}
 //@param memory_size, Memory Size of Process
 //@param pid, PID of Process
 //constructor, takes in Process info to create Process object
-Process::Process(const std::string &process_type, const int &memory_size, const int &pid)
+Process::Process(const std::string &process_type, const long long int &memory_size, const long long int &pid)
 {
   process_type_ = process_type; /* Common Process or RT-process */
   memory_size_ = memory_size;
@@ -23,13 +23,13 @@ void Process::setProcessType(const std::string &process_type)
 
 // sets memory_size
 //@param memory_size, Memory Size of Process
-void Process::setMemorySize(const int &memory_size)
+void Process::setMemorySize(const long long int &memory_size)
 {
   memory_size_ = memory_size;
 }
 
 // sets pid EXPLORE AUTO-INCREMENT/COUNT OF PROCESSES "BAG"
-void Process::setPID(const int &pid)
+void Process::setPID(const long long int &pid)
 {
   pid_ = pid;
 }
@@ -47,7 +47,7 @@ long long int Process::getMemorySize() const
 }
 
 // @return pid
-int Process::getPID() const
+long long int Process::getPID() const
 {
   return pid_;
 }
