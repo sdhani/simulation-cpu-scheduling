@@ -57,7 +57,6 @@ HardDisks Simulation::getHardDisks() const
   return HARD_DISKS_;
 }
 
-//=======================================================================
 // parses command line instructions
 void parseCommand(const std::string &line, std::string &command, std::string &number)
 {
@@ -184,12 +183,17 @@ void Simulation::executeTCommand()
 void Simulation::executedCommand(const int &disk_number)
 {
   std::cout << "d Command Recieved, " << disk_number << std::endl;
+  HARD_DISKS_.requestDisk(disk_number, READY_QUEUE_.getProcessOnCPU());
+  READY_QUEUE_.terminateCurrentProcess(); /* remove process from readyqueue */
 }
 
 // executes D # command; process on hard disk # has finished work; assign next process that wants hard disk # to hard disk
 void Simulation::executeDCommand(const int &disk_number)
 {
+  Process finished_with_hdd;
   std::cout << "D Command Recieved, " << disk_number << std::endl;
+  HARD_DISKS_.endDiskUse(disk_number, finished_with_hdd);
+  READY_QUEUE_.addProcess(finished_with_hdd);
 }
 
 // get memory snapshot
