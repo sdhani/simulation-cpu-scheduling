@@ -134,12 +134,12 @@ void Simulation::interpretCommand(const std::string &line)
     }
     else
     {
-      std::cout << "Invalid Command. Note Commands are case-senesitive" << std::endl;
+      std::cout << "Invalid Command. Note Commands are case-sensitive" << std::endl;
     }
   }
   else
   {
-    std::cout << "Invalid Command. Note Commands are case-senesitive" << std::endl;
+    std::cout << "Invalid Command. Note Commands are case-sensitive" << std::endl;
   }
 }
 
@@ -175,6 +175,7 @@ void Simulation::executeQCommand()
 // executes t command; terminate currently running process
 void Simulation::executeTCommand()
 {
+  /* terminate process on CPU */
   RAM_MEMORY_.removeProcessFromMemory(READY_QUEUE_.getProcessOnCPU());
   READY_QUEUE_.terminateCurrentProcess();
 }
