@@ -24,8 +24,8 @@ int main()
   std::cout << "Your program receives the number in bytes (no kilobytes or words)." << std::endl;
   std::cin >> TOTAL_HARD_DISKS;
 
-  std::cout << "TOTAL_RAM_MEMORY: " << TOTAL_RAM_MEMORY << ", "
-            << "TOTAL_HARD_DISKS: " << TOTAL_HARD_DISKS << std::endl;
+  std::cout << "RAM: " << TOTAL_RAM_MEMORY << "| "
+            << "HDD: " << TOTAL_HARD_DISKS << std::endl;
 
   Memory RAM(TOTAL_RAM_MEMORY);
   HardDisks HARD_DISKS(TOTAL_HARD_DISKS);
@@ -40,31 +40,3 @@ int main()
 
   return 0;
 }
-
-// while (true)
-// {
-//   char command = ' ';
-//   std::cin >> command;
-
-//   // std::cout << ": " << command << std::endl;
-//   if (command == 'S')
-//   {
-//     char second_command = ' ';
-//     std::cin >> second_command;
-//     if (second_command == 'r')
-//     {
-//       cpu_scheduling.printSR();
-//     }
-//     else if (second_command == 'i')
-//     {
-//       cpu_scheduling.printSI();
-//     }
-//     else if (second_command == 'm')
-//     {
-//       cpu_scheduling.printSM();
-//     }
-//     else
-//     {
-//       std::cout << "No specific view requested." << std::endl;
-//     }
-//   }
