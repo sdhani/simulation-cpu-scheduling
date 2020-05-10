@@ -7,11 +7,11 @@ Process::Process() {}
 //@param memory_size, Memory Size of Process
 //@param pid, PID of Process
 //constructor, takes in Process info to create Process object
-Process::Process(const std::string &process_type, const int &memory_size)
+Process::Process(const std::string &process_type, const int &memory_size, const int &pid)
 {
   process_type_ = process_type; /* Common Process or RT-process */
   memory_size_ = memory_size;
-  // pid_ = pid; /* Don't reassign PID's */
+  pid_ = pid; /* Don't reassign PID's */
 }
 
 // sets process_type
