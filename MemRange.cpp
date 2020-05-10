@@ -29,6 +29,12 @@ void MemRange::setProcess(const Process &process)
   process_ = process;
 }
 
+// set active
+void MemRange::setActive(const bool &is_active)
+{
+  active_ = is_active;
+}
+
 // @return start range
 long long int MemRange::getStart() const
 {
@@ -45,4 +51,10 @@ long long int MemRange::getEnd() const
 Process MemRange::getProcess() const
 {
   return process_;
+}
+
+// get process activity
+bool MemRange::isActive() const
+{
+  return active_;
 }
