@@ -40,7 +40,6 @@ Process ReadyQueue::getProcessOnCPU() const
   }
   else
   {
-    std::cout << "IDLE";
     Process err;
     err.setPID(-1);
     return err;
