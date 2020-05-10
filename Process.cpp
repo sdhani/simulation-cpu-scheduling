@@ -3,6 +3,13 @@
 //default constructor
 Process::Process() {}
 
+Process::Process(const Process &p)
+{
+  process_type_ = p.getProcessType();
+  memory_size_ = p.getMemorySize();
+  pid_ = p.getPID();
+}
+
 //@param process_type, Type of Process
 //@param memory_size, Memory Size of Process
 //@param pid, PID of Process

@@ -11,7 +11,8 @@ private:
   long long int pid_;             /* Don't reassign PID's */
 
 public:
-  Process();                                                                                            // default constructor
+  Process();
+  Process(const Process &p);                                                                            // default constructor
   Process(const std::string &process_type, const long long int &memory_size, const long long int &pid); // parameterized constructor
 
   void setProcessType(const std::string &process_type); // sets process_type
