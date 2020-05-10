@@ -7,17 +7,17 @@
 class ReadyQueue
 {
 private:
-  int size_ = 0;                           // current size of Ready Queue
+  long long int size_ = 0;                 // current size of Ready Queue
   std::deque<Process> ready_queue_rt_;     // rt level ready queue
   std::deque<Process> ready_queue_common_; // common level ready queue
 
 public:
   ReadyQueue();
   bool addProcess(Process &new_process);           // add process to ReadyQueue, return success
-  Process getProcessOnCPU() const;                 // @return process currently using the CPU
+  Process getProcessOnCPU() const;                 // @return process pid currently using the CPU
   bool terminateCurrentProcess();                  // @return successful, terminate current running process
   void endTimeSlice();                             // end time slice, give cpu to next process
-  int getSize() const;                             // @return current size of Ready Queue
+  long long int getSize() const;                   // @return current size of Ready Queue
   std::deque<Process> getRTReadyQueue() const;     // @return RT Ready Queue
   std::deque<Process> getCommonReadyQueue() const; // @return Common Ready Queue
   void printReadyQueue();                          // print ready queue snapshot

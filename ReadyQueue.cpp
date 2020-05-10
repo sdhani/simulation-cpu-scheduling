@@ -34,9 +34,16 @@ Process ReadyQueue::getProcessOnCPU() const
   {
     return ready_queue_rt_.front();
   }
-  else
+  else if (!ready_queue_common_.empty())
   {
     return ready_queue_common_.front();
+  }
+  else
+  {
+    std::cout << "IDLE";
+    Process err;
+    err.setPID(-1);
+    return err;
   }
 }
 
@@ -87,7 +94,7 @@ void ReadyQueue::endTimeSlice()
 }
 
 // @return current size of Ready Queue
-int ReadyQueue::getSize() const
+long long int ReadyQueue::getSize() const
 {
   return size_;
 }
@@ -104,42 +111,38 @@ std::deque<Process> ReadyQueue::getCommonReadyQueue() const
   return ready_queue_common_;
 }
 
+// helper print PID function
+std::string printPID(const long long int &pid)
+{
+  return "P" + std::to_string(pid) + " ";
+}
+
 // print ready queue snapshot
 void ReadyQueue::printReadyQueue()
 {
-  std::cout << "CPU: ";
-  int cpu_pid = -1;
+  long long int cpu_pid = getProcessOnCPU().getPID();
 
-  // get process at top of deque
-  if (!ready_queue_rt_.empty())
-  {
-    cpu_pid = ready_queue_rt_.front().getPID();
-    std::cout << ready_queue_rt_.front().getPID() << std::endl;
-  }
-  else if (!ready_queue_common_.empty())
-  {
-    cpu_pid = ready_queue_common_.front().getPID();
-    std::cout << ready_queue_common_.front().getPID() << std::endl;
-  }
-  else
-  {
-    std::cout << "IDLE" << std::endl;
-  }
+  std::cout << "   CPU "
+            << "| "
+            << (cpu_pid == -1 ? "IDLE" : printPID(cpu_pid)) << std::endl;
 
-  //================================================================================================
+  std::cout << "   RT-queue: ";
   for (auto p : ready_queue_rt_)
   {
     if (p.getPID() != cpu_pid)
     {
-      std::cout << p.getPID() << "| " << p.getProcessType() << "| " << p.getMemorySize() << std::endl;
+      std::cout << "<- " << printPID(p.getPID());
     }
   }
 
+  std::cout << std::endl;
+  std::cout << "   C-queue:  ";
   for (auto p : ready_queue_common_)
   {
     if (p.getPID() != cpu_pid)
     {
-      std::cout << p.getPID() << "| " << p.getProcessType() << "| " << p.getMemorySize() << std::endl;
+      std::cout << "<- " << printPID(p.getPID());
     }
   }
+  std::cout << std::endl;
 }
