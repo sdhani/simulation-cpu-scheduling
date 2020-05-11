@@ -40,7 +40,7 @@ void Memory::consolidateMemoryChunks()
 {
   bool seenHole = false;            /* tracks if seen a hole */
   unsigned long long int hole = -1; /* tracks index of last hole */
-  for (unsigned long long i = 0; i < continguous_memory_.size(); i++)
+  for (unsigned long long int i = 0; i < continguous_memory_.size(); i++)
   {
     MemBlock &m = continguous_memory_[i];
 
@@ -77,21 +77,21 @@ bool Memory::addProcessToMemory(const Process &p)
   long long int p_size = p.getMemorySize();
   if (free_memory_ >= p_size)
   {
-    for (unsigned long long i = 0; i < continguous_memory_.size(); i++)
+    for (unsigned long long int i = 0; i < continguous_memory_.size(); i++)
     {
       MemBlock &m = continguous_memory_[i];
       if (!m.active_ && m.memory_chunk_ >= p_size)
       {
-        int new_end = 0;
+        long long int new_end = 0;
         if (i == 0)
         {
           new_end = (m.start_ + p_size) - 1;
         }
         else
         {
-          new_end = (m.start_ + p_size);
+          new_end = (m.start_ + p_size) - 1;
         }
-        MemBlock new_m = {m.start_ + 1, new_end, p.getPID(), p_size, true};
+        MemBlock new_m = {m.start_, new_end, p.getPID(), p_size, true};
 
         continguous_memory_[i].start_ = new_end + 1; // Shift start of memory hole to end of new process
         continguous_memory_[i].memory_chunk_ = continguous_memory_[i].end_ - new_end;
@@ -113,7 +113,7 @@ bool Memory::addProcessToMemory(const Process &p)
     /* Append to the end of memory */
     else if ((memory_size_ - continguous_memory_.back().end_) >= p_size)
     {
-      int end = continguous_memory_.back().end_; // end of last process in memory
+      long long int end = continguous_memory_.back().end_; // end of last process in memory
       MemBlock new_m = {end + 1, (end + p_size), p.getPID(), p_size, true};
       continguous_memory_.push_back(new_m);
       free_memory_ -= p_size; // allocate memory
@@ -128,7 +128,7 @@ bool Memory::addProcessToMemory(const Process &p)
 // @return true if remove process from memory is successful
 bool Memory::removeProcessFromMemory(const Process &p)
 {
-  for (unsigned long long i = 0; i < continguous_memory_.size(); i++)
+  for (unsigned long long int i = 0; i < continguous_memory_.size(); i++)
   {
     if (continguous_memory_[i].pid_ == p.getPID())
     {
