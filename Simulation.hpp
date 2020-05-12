@@ -10,7 +10,7 @@ class Simulation
 {
 private:
   Memory RAM_MEMORY_;
-  CPU CPU_;
+  // CPU CPU_;
   ReadyQueue READY_QUEUE_;
   HardDisks HARD_DISKS_;
   long long int PID_COUNT_ = 1; // keep track of PID
@@ -19,14 +19,14 @@ public:
   Simulation(); // default constructor
   Simulation(const Memory &ram_memory, const HardDisks &hard_disks);
 
-  void setRAM(const Memory &ram_memory);             // sets size of RAM Simulation
-  void setCPU(const CPU &cpu);                       // set cpu
+  void setRAM(const Memory &ram_memory); // sets size of RAM Simulation
+  // void setCPU(const CPU &cpu);                       // set cpu
   void setReadyQueue(const ReadyQueue &ready_queue); // sets ready_queue
   void setHardDisks(const HardDisks &hard_disks);    // sets hard disks
   Memory getMemory() const;                          // @return Memory
-  CPU getCPU() const;                                // @return CPU
-  ReadyQueue getReadyQueue() const;                  // @return Ready Queue
-  HardDisks getHardDisks() const;                    // @return Hard Disks
+  // CPU getCPU() const;                                // @return CPU
+  ReadyQueue getReadyQueue() const; // @return Ready Queue
+  HardDisks getHardDisks() const;   // @return Hard Disks
 
   void interpretCommand(const std::string &line);                  // parses command line instructions
   void executeACommand(const long long int &process_memory_size);  // executes A # command, create common process

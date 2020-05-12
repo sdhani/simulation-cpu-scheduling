@@ -3,19 +3,12 @@
 
 #include <iostream>
 #include <vector>
-#include "MemRange.hpp"
+#include "MemBlock.hpp"
+#include "Process.hpp"
 
 class Memory
 {
 private:
-  struct MemBlock
-  {
-    long long int start_;
-    long long int end_;
-    long long int pid_;
-    long long int memory_chunk_;
-    bool active_;
-  };
   std::vector<MemBlock> continguous_memory_; /* Some data type that shows which processes using how much memory */
   long long int memory_size_;
   long long int free_memory_;

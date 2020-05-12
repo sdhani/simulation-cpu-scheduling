@@ -1,3 +1,14 @@
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * The Ready Queue in this simulation has two levels, A Real Time process level
+ * and a Common process level. Real Time processes can preempt Common processes
+ * from using the CPU. Both levels of the Ready Queue practice Round-Robin CPU
+ * Scheduling, and therefore responds to the 'Q' command as an end of time slice/quantum
+ * action. 
+ */
+
 #include "ReadyQueue.hpp"
 #include <iomanip>
 
@@ -54,13 +65,11 @@ bool ReadyQueue::terminateCurrentProcess()
 
   if (!ready_queue_rt_.empty())
   {
-    std::cout << "Terminated RT process #" << ready_queue_rt_.front().getPID() << std::endl;
     ready_queue_rt_.pop_front();
     size_--;
   }
   else if (!ready_queue_common_.empty())
   {
-    std::cout << "Terminated Common process #" << ready_queue_common_.front().getPID() << std::endl;
     ready_queue_common_.pop_front();
     size_--;
   }

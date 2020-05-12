@@ -32,6 +32,7 @@ int main()
   Simulation cpu_scheduling(RAM, HARD_DISKS);
 
   std::string command;
+  getline(std::cin, command);
 
   while (getline(std::cin, command))
   {

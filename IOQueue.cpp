@@ -1,3 +1,12 @@
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * Simulates a single IO queue connected to a Hard Disk. Processes
+ * waiting to use a particular Hard Disk is on this queue. The first 
+ * element on the queue is currently "using" the Hard Disk.
+ */
+
 #include "IOQueue.hpp"
 
 // default constructor

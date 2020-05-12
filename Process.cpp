@@ -1,3 +1,11 @@
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * Process represents a basic process in the simulation and contains a PID,
+ * the process's memory size, and the process type (Real Time or Common, in this case).
+ */
+
 #include "Process.hpp"
 
 //default constructor

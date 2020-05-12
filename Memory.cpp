@@ -1,13 +1,13 @@
-#include "Memory.hpp"
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * Memory controls all memory logic in the simulation including the allocation
+ * of and releasing of process memory. It also addresses memory holes. It follows
+ * a "First-Fit" approach to handling process memory allocation in "continguous memory."
+ */
 
-struct MemBlock
-{
-  long long int start_;
-  long long int end_;
-  long long int pid_;
-  long long int memory_chunk_;
-  bool active_;
-};
+#include "Memory.hpp"
 
 Memory::Memory() {}
 
@@ -29,12 +29,6 @@ long long int Memory::getMemorySize() const
   return memory_size_;
 }
 
-// @return memory list
-// std::vector<MemBlock> Memory::getContiguousMemory() const
-// {
-//   return continguous_memory_;
-// }
-
 // consolidate consecutive memory holes into one
 void Memory::consolidateMemoryChunks()
 {
@@ -44,17 +38,17 @@ void Memory::consolidateMemoryChunks()
   {
     MemBlock &m = continguous_memory_[i];
 
-    if (!m.active_ && !seenHole)
+    if (!m.active() && !seenHole)
     {
       seenHole = true;
       hole = i;
     }
-    else if (seenHole && !m.active_)
+    else if (seenHole && !m.active())
     {
       if (hole == i - 1)
       {
-        continguous_memory_[hole].end_ = m.end_;
-        continguous_memory_[hole].memory_chunk_ += m.memory_chunk_;
+        continguous_memory_[hole].setEnd(m.end());
+        continguous_memory_[hole].setMemoryChunk(continguous_memory_[hole].memoryChunk() + m.memoryChunk());
         continguous_memory_.erase(continguous_memory_.begin() + i);
       }
       else
@@ -62,7 +56,7 @@ void Memory::consolidateMemoryChunks()
         hole = i;
       }
     }
-    if (m.start_ >= m.end_)
+    if (m.start() >= m.end())
     {
       continguous_memory_.erase(continguous_memory_.begin() + i);
     }
@@ -80,21 +74,21 @@ bool Memory::addProcessToMemory(const Process &p)
     for (unsigned long long int i = 0; i < continguous_memory_.size(); i++)
     {
       MemBlock &m = continguous_memory_[i];
-      if (!m.active_ && m.memory_chunk_ >= p_size)
+      if (!m.active() && m.memoryChunk() >= p_size)
       {
         long long int new_end = 0;
         if (i == 0)
         {
-          new_end = (m.start_ + p_size) - 1;
+          new_end = (m.start() + p_size) - 1;
         }
         else
         {
-          new_end = (m.start_ + p_size) - 1;
+          new_end = (m.start() + p_size) - 1;
         }
-        MemBlock new_m = {m.start_, new_end, p.getPID(), p_size, true};
+        MemBlock new_m = {m.start(), new_end, p.getPID(), p_size, true};
 
-        continguous_memory_[i].start_ = new_end + 1; // Shift start of memory hole to end of new process
-        continguous_memory_[i].memory_chunk_ = continguous_memory_[i].end_ - new_end;
+        continguous_memory_[i].setStart(new_end + 1); // Shift start of memory hole to end of new process
+        continguous_memory_[i].setMemoryChunk(continguous_memory_[i].end() - new_end);
         continguous_memory_.insert(continguous_memory_.begin() + i, new_m);
 
         free_memory_ -= p_size; // allocate memory
@@ -105,15 +99,15 @@ bool Memory::addProcessToMemory(const Process &p)
     /* Append to front of memory */
     if (continguous_memory_.empty())
     {
-      MemBlock new_m = {0, (p_size + -1), p.getPID(), p_size, true};
+      MemBlock new_m = {0, (p_size - 1), p.getPID(), p_size, true};
       continguous_memory_.push_back(new_m);
       free_memory_ -= p_size; // allocate memory
       return true;
     }
     /* Append to the end of memory */
-    else if ((memory_size_ - continguous_memory_.back().end_) >= p_size)
+    else if ((memory_size_ - continguous_memory_.back().end()) >= p_size)
     {
-      long long int end = continguous_memory_.back().end_; // end of last process in memory
+      long long int end = continguous_memory_.back().end(); // end of last process in memory
       MemBlock new_m = {end + 1, (end + p_size), p.getPID(), p_size, true};
       continguous_memory_.push_back(new_m);
       free_memory_ -= p_size; // allocate memory
@@ -130,10 +124,10 @@ bool Memory::removeProcessFromMemory(const Process &p)
 {
   for (unsigned long long int i = 0; i < continguous_memory_.size(); i++)
   {
-    if (continguous_memory_[i].pid_ == p.getPID())
+    if (continguous_memory_[i].pid() == p.getPID())
     {
-      continguous_memory_[i].active_ = false; /* Process Terminated */
-      free_memory_ += continguous_memory_[i].memory_chunk_;
+      continguous_memory_[i].setActive(false); /* Process Terminated */
+      free_memory_ += continguous_memory_[i].memoryChunk();
       consolidateMemoryChunks(); // consolidate memory chunks
       return true;
     }
@@ -153,11 +147,11 @@ void Memory::printMemory()
   consolidateMemoryChunks(); // consolidate memory chunks
   if (continguous_memory_.empty())
   {
-    std::cout << "0-" << std::to_string(memory_size_) << "| EMPTY" << std::endl;
+    std::cout << "   0-" << std::to_string(memory_size_) << "| EMPTY" << std::endl;
   }
 
   for (auto &m : continguous_memory_)
   {
-    std::cout << m.start_ << "-" << m.end_ << "| " << (m.active_ ? printPIDM(m.pid_) : "EMPTY") << std::endl;
+    std::cout << "   " << m.start() << "-" << m.end() << "| " << (m.active() ? printPIDM(m.pid()) : "EMPTY") << std::endl;
   }
 }

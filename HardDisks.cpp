@@ -1,3 +1,12 @@
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * Hard Disks keeps track of all devices in the simulation and the 
+ * processes that are using the hard disks and the processes waiting 
+ * to use the hard disk.
+ */
+
 #include <iostream>
 #include "HardDisks.hpp"
 
@@ -81,11 +90,11 @@ void HardDisks::printHardDisks()
   for (unsigned i = 0; i < hard_disks_.size(); i++)
   {
     IOQueue &p = hard_disks_[i];
-    std::cout << "HDD ";
+    std::cout << "   HDD ";
     std::cout << std::to_string(i) << ": ";
-    std::cout << ((p.onDisk().getPID() == -1) ? "IDLE" : "P" + std::to_string(p.onDisk().getPID())) << std::endl;
+    std::cout << ((p.onDisk().getPID() == -1) ? "IDLE" : "P" + std::to_string(p.onDisk().getPID()));
 
-    std::cout << "I/O Queue: ";
+    std::cout << "  | I/O Queue: ";
     if (!p.isEmpty())
     {
       for (unsigned i = 0; i < p.getIOQueue().size(); i++)

@@ -1,3 +1,12 @@
+/**
+ * Author: Shania Dhani
+ * Date Modified May 12, 2020
+ * 
+ * Simulation interprets and executes all inputs in the program. 
+ * The simulation environment is a simple mock of the environment 
+ * of the Operating system for CPU Scheduling. 
+ */
+
 #include <sstream>
 #include "Simulation.hpp"
 
@@ -16,10 +25,10 @@ void Simulation::setRAM(const Memory &ram_memory)
 }
 
 // set CPU
-void Simulation::setCPU(const CPU &cpu)
-{
-  CPU_ = cpu;
-}
+// void Simulation::setCPU(const CPU &cpu)
+// {
+//   CPU_ = cpu;
+// }
 
 // sets ready_queue
 void Simulation::setReadyQueue(const ReadyQueue &ready_queue)
@@ -39,11 +48,11 @@ Memory Simulation::getMemory() const
   return RAM_MEMORY_;
 }
 
-// @return CPU
-CPU Simulation::getCPU() const
-{
-  return CPU_;
-}
+// // @return CPU
+// CPU Simulation::getCPU() const
+// {
+//   return CPU_;
+// }
 
 // @return Ready Queue
 ReadyQueue Simulation::getReadyQueue() const
@@ -106,10 +115,10 @@ void Simulation::interpretCommand(const std::string &line)
     }
     else
     {
-      std::cout << "Invalid command, expected a number. Note Commands are case-sensitive" << std::endl;
+      std::cout << "Invalid command. (Expected a number, case sensitive)" << std::endl;
     }
   }
-  else if (!build_command.empty() && build_number.empty())
+  else if (!build_command.empty())
   {
     if (build_command == "Q")
     {
@@ -133,12 +142,8 @@ void Simulation::interpretCommand(const std::string &line)
     }
     else
     {
-      std::cout << "Invalid Command. Note Commands are case-sensitive" << std::endl;
+      std::cout << "Invalid Command." << std::endl;
     }
-  }
-  else
-  {
-    std::cout << "Invalid Command. Note Commands are case-sensitive" << std::endl;
   }
 }
 
@@ -146,7 +151,6 @@ void Simulation::interpretCommand(const std::string &line)
 void Simulation::executeACommand(const long long int &process_memory_size)
 {
   Process new_common_process("C", process_memory_size, PID_COUNT_);
-
   if (RAM_MEMORY_.addProcessToMemory(new_common_process))
   {
     READY_QUEUE_.addProcess(new_common_process);
@@ -182,7 +186,6 @@ void Simulation::executeTCommand()
 // executes d # command; process that currently uses the CPU requests the hard disk #
 void Simulation::executedCommand(const int &disk_number)
 {
-  std::cout << "d Command Recieved, " << disk_number << std::endl;
   HARD_DISKS_.requestDisk(disk_number, READY_QUEUE_.getProcessOnCPU());
   READY_QUEUE_.terminateCurrentProcess(); /* remove process from readyqueue */
 }
@@ -191,7 +194,6 @@ void Simulation::executedCommand(const int &disk_number)
 void Simulation::executeDCommand(const int &disk_number)
 {
   Process finished_with_hdd;
-  std::cout << "D Command Recieved, " << disk_number << std::endl;
   HARD_DISKS_.endDiskUse(disk_number, finished_with_hdd);
   READY_QUEUE_.addProcess(finished_with_hdd);
 }
@@ -199,20 +201,17 @@ void Simulation::executeDCommand(const int &disk_number)
 // get memory snapshot
 void Simulation::printSM()
 {
-  // std::cout << "Shows the state of memory. Show the range of memory addresses used by each process in the system." << std::endl;
   RAM_MEMORY_.printMemory();
 }
 
 // get hard-disk and i/o snapshot
 void Simulation::printSI()
 {
-  // std::cout << "Shows what processes are currently using the hard disks and what processes are waiting to use them. For each busy hard disk show the process that uses it and show its I/O-queue. The enumeration of hard disks starts from 0." << std::endl;
   HARD_DISKS_.printHardDisks();
 }
 
 // get ready-queue and cpu snapshot
 void Simulation::printSR()
 {
-  // std::cout << "Shows what process is currently using the CPU and what processes are waiting on both levels of the ready-queue." << std::endl;
   READY_QUEUE_.printReadyQueue();
 }
