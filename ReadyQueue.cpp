@@ -130,11 +130,15 @@ void ReadyQueue::printReadyQueue()
 {
   long long int cpu_pid = getProcessOnCPU().getPID();
 
-  std::cout << "   CPU "
-            << "| "
+  std::cout << "   CPU: "
+            << " "
             << (cpu_pid == -1 ? "IDLE" : printPID(cpu_pid)) << std::endl;
 
   std::cout << "   RT-queue: ";
+  if (ready_queue_rt_.size() <= 1)
+  {
+    std::cout << "EMPTY";
+  }
   for (auto p : ready_queue_rt_)
   {
     if (p.getPID() != cpu_pid)
@@ -145,6 +149,11 @@ void ReadyQueue::printReadyQueue()
 
   std::cout << std::endl;
   std::cout << "   C-queue:  ";
+
+  if (ready_queue_common_.size() <= 1 && ready_queue_common_[0].getPID() == cpu_pid)
+  {
+    std::cout << "EMPTY";
+  }
   for (auto p : ready_queue_common_)
   {
     if (p.getPID() != cpu_pid)

@@ -94,7 +94,7 @@ void HardDisks::printHardDisks()
     std::cout << std::to_string(i) << ": ";
     std::cout << ((p.onDisk().getPID() == -1) ? "IDLE" : "P" + std::to_string(p.onDisk().getPID()));
 
-    std::cout << "  | I/O Queue: ";
+    std::cout << "   I/O " << std::to_string(i) << ": ";
     if (!p.isEmpty())
     {
       for (unsigned i = 0; i < p.getIOQueue().size(); i++)
@@ -102,9 +102,14 @@ void HardDisks::printHardDisks()
         Process q = p.getIOQueue()[i];
         if (i != 0 && q.getPID() != -1)
         {
-          std::cout << "P" << q.getPID() << ", ";
+          std::cout << " <- "
+                    << "P" << q.getPID();
         }
       }
+    }
+    else
+    {
+      std::cout << "EMPTY";
     }
     std::cout << std::endl;
   }

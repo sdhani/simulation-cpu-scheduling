@@ -21,10 +21,10 @@ int main()
   std::cout << "How much RAM memory is there on the simulated computer?" << std::endl;
   std::cin >> TOTAL_RAM_MEMORY;
 
-  std::cout << "Your program receives the number in bytes (no kilobytes or words)." << std::endl;
+  std::cout << "How many hard disks does the simulated computer have? " << std::endl;
   std::cin >> TOTAL_HARD_DISKS;
 
-  std::cout << "RAM: " << TOTAL_RAM_MEMORY << "| "
+  std::cout << "RAM: " << TOTAL_RAM_MEMORY << " "
             << "HDD: " << TOTAL_HARD_DISKS << std::endl;
 
   Memory RAM(TOTAL_RAM_MEMORY);

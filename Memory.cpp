@@ -147,11 +147,11 @@ void Memory::printMemory()
   consolidateMemoryChunks(); // consolidate memory chunks
   if (continguous_memory_.empty())
   {
-    std::cout << "   0-" << std::to_string(memory_size_) << "| EMPTY" << std::endl;
+    std::cout << "   0-" << std::to_string(memory_size_) << " EMPTY" << std::endl;
   }
 
   for (auto &m : continguous_memory_)
   {
-    std::cout << "   " << m.start() << "-" << m.end() << "| " << (m.active() ? printPIDM(m.pid()) : "EMPTY") << std::endl;
+    std::cout << "   " << m.start() << "-" << m.end() << " " << (m.active() ? printPIDM(m.pid()) : "EMPTY") << std::endl;
   }
 }
