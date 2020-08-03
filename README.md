@@ -1,6 +1,6 @@
 ## CPU Scheduling Simulation 👾
 
-### To run:
+#### To run:
 
 1. Unzip file.
 1. Navigate to the root directory of the project.
