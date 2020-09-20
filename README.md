@@ -14,7 +14,9 @@
 How much RAM memory is there on the simulated computer? (Up to 4 billions).
 How many hard disks does the simulated computer have? 
 
-# After this, the simulation begins. The program is constantly listening for user inputs. Possible inputs are:
+# After this, the simulation begins. 
+# The program is constantly listening for user inputs. 
+# Possible inputs are listed under Acceptable Commands
  ```
 
 ### Acceptable Commands
